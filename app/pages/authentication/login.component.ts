@@ -9,15 +9,26 @@ import {AuthenticationService} from '../../services/authentication-service'
             <input #username class="form-control" placeholder="Brugernavn" required="required" type="text" /> <br />
             <input #password class="form-control" placeholder="Adgangskode" required="required" type="password" /> <br />
             <button type="submit" class="btn btn-default">Log ind</button>
+            <p>{{ stateText }}</p>
         </form>
     `
 })
 
 export class LoginComponent {
 
+    stateText: string;
+
     constructor(private authenticationService: AuthenticationService) {}
 
     login(username: string, password: string) {
-        this.authenticationService.login(username, password);
+        this.authenticationService.login(username, password)
+        .subscribe(
+            token => {
+                this.stateText = "Du er nu logget ind!";
+            },
+            error => {
+                this.stateText = "Øv!";
+            }
+        );
     }
 }

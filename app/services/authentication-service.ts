@@ -11,21 +11,24 @@ export class AuthenticationService {
 
     constructor(private http: Http, private tokenService: TokenService, private headerService: HeaderService) {}
 
-    login(username: string, password: string) {
+    login(username: string, password: string): Observable<boolean> {
         console.log(`Authenticating with username ${username} and password ${password}`);
 
-        this.http.post("http://localhost:8080/service/authenticate", null, {
+        let requestObservable = this.http.post("http://localhost:8080/service/authenticate", null, {
             headers: this.headerService.authenticationHeaders(username, password)
         })
         .map(response => response.json())
-        .map(json => json.token)
-        .subscribe(
+        .map(json => json.token);
+
+        requestObservable.subscribe(
             token => {
-                this.tokenService.setToken(token)
+                this.tokenService.setToken(token);
             },
             error => {
                 console.log("Could not authenticate", error);
             }
         );
+
+        return requestObservable;
     }
 }

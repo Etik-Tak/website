@@ -2,24 +2,21 @@ import {Injectable} from 'angular2/core';
 import {TokenService} from './token-service'
 import {Headers} from 'angular2/http';
 import {StringUtils} from '../util/string-utils';
+import {ExtendedHeaders} from '../util/extended-headers';
 
 @Injectable()
-export class HeaderService extends Headers {
+export class HeaderService {
 
-    constructor(private tokenService: TokenService) {
-        super();
-    }
+    constructor(private tokenService: TokenService) {}
 
-    authenticatedHeader(): Headers {
+    authenticatedHeaders(): Headers {
         if (this.tokenService.hasToken()) {
-            this.append("X-Auth-Token", this.tokenService.getToken());
+            return new Headers({"X-Auth-Token": this.tokenService.getToken()});
         }
-        return this;
+        return new Headers();
     }
 
     authenticationHeaders(username: string, password: string): Headers {
-        this.append("X-Auth-Username", username);
-        this.append("X-Auth-Password", password);
-        return this;
+        return new Headers({"X-Auth-Username": username, "X-Auth-Password": password});
     }
 }
