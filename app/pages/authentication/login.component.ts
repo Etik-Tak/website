@@ -1,5 +1,6 @@
 import {Component} from 'angular2/core'
 import {AuthenticationService} from '../../services/authentication-service'
+import {Router} from 'angular2/router'
 
 @Component({
     selector: 'etik-tak-login-form',
@@ -18,13 +19,16 @@ export class LoginComponent {
 
     stateText: string;
 
-    constructor(private authenticationService: AuthenticationService) {}
+    constructor(
+        private authenticationService: AuthenticationService,
+        private router: Router) {}
 
     login(username: string, password: string) {
         this.authenticationService.login(username, password)
         .subscribe(
             token => {
                 this.stateText = "Du er nu logget ind!";
+                setTimeout(() => {this.router.navigate(["Home"])}, 2000);
             },
             error => {
                 this.stateText = "Øv!";

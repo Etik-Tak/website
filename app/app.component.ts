@@ -1,10 +1,18 @@
 import {Component} from 'angular2/core';
+import {RouteConfig, ROUTER_DIRECTIVES} from 'angular2/router';
 
 import * as Pages from './pages/pages';
 
 @Component({
     selector: 'app',
-    directives: [Pages.LoginComponent],
-    template: '<etik-tak-login-form></etik-tak-login-form>'
+    directives: [ROUTER_DIRECTIVES],
+    template: `
+        <h1>Etik-Tak</h1>
+        <router-outlet></router-outlet>
+    `
 })
+@RouteConfig([
+    {path:'/login',   name: 'Login',    component: Pages.LoginComponent},
+    {path:'/',        name: 'Home',     component: Pages.HomeComponent}
+])
 export class AppComponent { }
