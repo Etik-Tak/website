@@ -16,13 +16,12 @@ export class AuthenticationService {
     login(username: string, password: string): void {
         console.log(`Authenticating with username ${username} and password ${password}`);
 
-        let requestObservable = this.http.post("http://localhost:8080/service/authenticate", null, {
+        this.http.post("http://localhost:8080/service/authenticate", null, {
             headers: this.headerService.authenticationHeaders(username, password)
         })
         .map(response => response.json())
-        .map(json => json.token);
-
-        requestObservable.subscribe(
+        .map(json => json.token)
+        .subscribe(
             token => this.loginFromToken(token),
             error => this.loginFailed(error)
         );
