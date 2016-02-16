@@ -1,4 +1,4 @@
-import {Injectable} from 'angular2/core';
+import {Injectable, EventEmitter} from 'angular2/core';
 import {Http, Headers, Response} from 'angular2/http';
 import {Observable} from 'rxjs/Rx';
 import {TokenService} from './token-service';
@@ -8,10 +8,12 @@ import {HeaderService} from './header-service';
 export class AuthenticationService {
 
     public token: string;
+    public successfulLoginEvent: EventEmitter<string> = new EventEmitter();
+    public failedLoginEvent: EventEmitter<any> = new EventEmitter();
 
     constructor(private http: Http, private tokenService: TokenService, private headerService: HeaderService) {}
 
-    login(username: string, password: string): Observable<boolean> {
+    login(username: string, password: string): void {
         console.log(`Authenticating with username ${username} and password ${password}`);
 
         let requestObservable = this.http.post("http://localhost:8080/service/authenticate", null, {
@@ -21,14 +23,18 @@ export class AuthenticationService {
         .map(json => json.token);
 
         requestObservable.subscribe(
-            token => {
-                this.tokenService.setToken(token);
-            },
-            error => {
-                console.log("Could not authenticate", error);
-            }
+            token => this.loginFromToken(token),
+            error => this.loginFailed(error)
         );
-
-        return requestObservable;
+    }
+    
+    loginFromToken(token: string) {
+        this.tokenService.setToken(token);
+        this.successfulLoginEvent.emit(token);
+    }
+    
+    loginFailed(error: any) {
+        console.log("Could not authenticate", error);
+        this.failedLoginEvent.emit(error);
     }
 }

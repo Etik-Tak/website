@@ -21,18 +21,21 @@ export class LoginComponent {
 
     constructor(
         private authenticationService: AuthenticationService,
-        private router: Router) {}
-
-    login(username: string, password: string) {
-        this.authenticationService.login(username, password)
-        .subscribe(
-            token => {
+        private router: Router) {
+            
+        this.authenticationService.successfulLoginEvent.subscribe(
+            (token: string) => {
                 this.stateText = "Du er nu logget ind!";
                 setTimeout(() => {this.router.navigate(["Home"])}, 2000);
-            },
-            error => {
-                this.stateText = "Øv!";
             }
         );
+        
+        this.authenticationService.failedLoginEvent.subscribe(
+            (error: string) => this.stateText = "Øv!"
+        );
+    }
+
+    login(username: string, password: string) {
+        this.authenticationService.login(username, password);
     }
 }
