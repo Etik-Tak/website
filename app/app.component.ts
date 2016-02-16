@@ -8,7 +8,6 @@ import * as Pages from './pages/pages';
     directives: [ROUTER_DIRECTIVES],
     template: `
         <h1>Etik-Tak</h1>
-        <p>Nu med ekstra mange contributors</p>
         <router-outlet></router-outlet>
     `
 })
