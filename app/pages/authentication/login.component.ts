@@ -26,13 +26,13 @@ export class LoginComponent {
     login(username: string, password: string) {
         this.authenticationService.login(username, password)
         .subscribe(
-            token => {
+            result => {
                 this.stateText = "Du er nu logget ind!";
-                setTimeout(() => {this.router.navigate(["Home"])}, 2000);
+                setTimeout(() => {
+                    this.router.navigate(["Home"])
+                }, 2000);
             },
-            error => {
-                this.stateText = "Øv!";
-            }
+            error => this.stateText = "Øv!"
         );
     }
 }
