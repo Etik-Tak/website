@@ -1,4 +1,4 @@
-Etik-Tak Backend
+Etik-Tak Website
 ================
 
      _____ _   _ _       _____     _    
@@ -19,6 +19,6 @@ Install the npm package manager. Then, from the root directory, run:
 
 ### Running
 
-Run node.js to run the server:
+Run the server:
 
-`npm start`
+`npm run lite`
