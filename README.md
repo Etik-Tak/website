@@ -13,7 +13,7 @@ Getting Started
 
 ### Setup
 
-Install the npm package manager. Then, from the root directory, run:
+Install the npm package manager. Then, go to the root directory and run:
 
 `npm install`
 
